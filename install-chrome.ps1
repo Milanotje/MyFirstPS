@@ -1,13 +1,14 @@
 $chromeInstallerUrl = "https://dl.google.com/chrome/install/latest/chrome_installer.exe"
 $chromeInstallerPath = "$env:TEMP\chrome_installer.exe"
 function Is-ChromeInstalled {
-    $chromePath = "C:\Users\Milanotje\AppData\Local\Google\Chrome\Application\chrome.exe"
-    if (Test-Path $chromePath) {
+    $chrome = Get-WmiObject -Class Win32_Product | Where-Object { $_.Name -eq "Google Chrome" }
+    if ($chrome) {
         return $true
     } else {
         return $false
     }
 }
+
 function Install-Chrome {
     Write-Output "Downloading Chrome installer..."
     Invoke-WebRequest -Uri $chromeInstallerUrl -OutFile $chromeInstallerPath
